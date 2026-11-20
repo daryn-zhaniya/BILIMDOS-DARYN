@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BILIMDOS — №4 мектеп-интернат</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📘</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--navy:#0B1F4B;--blue:#2563EB;--cyan:#67E8F9;--bg:#F4F6FA;--card:#fff;--tx:#1F2430;--mut:#5d6679;--ln:#dfe4ee;--ok:#3FAE7A;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1220;--card:#141c30;--tx:#e8ecf5;--mut:#9aa5bd;--ln:#26314d;--navy:#cfe0ff}}
+*{box-sizing:border-box}html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:16px/1.55 Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--ln)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.bar{display:flex;align-items:center;gap:12px;padding:10px 16px;max-width:1100px;margin:auto}
+.logo{font-weight:800;font-size:20px;color:var(--navy);letter-spacing:-.5px;margin-right:auto;cursor:pointer}
+nav{display:flex;gap:4px;overflow-x:auto;padding:0 12px 8px;max-width:1100px;margin:auto;scrollbar-width:none}
+nav a{white-space:nowrap;padding:6px 12px;border-radius:6px;color:var(--mut);font-size:14px;font-weight:500;cursor:pointer}
+nav a.on{background:var(--navy);color:var(--bg)}
+button,.btn{font:inherit;font-weight:600;border:1px solid var(--ln);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:8px;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pri{background:var(--blue);border-color:var(--blue);color:#fff}.pri:hover{background:#1d4fc4}.no{color:#b42318}
+main{max-width:1100px;margin:auto;padding:20px 16px 60px}
+h1{font-size:clamp(34px,7vw,60px);line-height:1.05;letter-spacing:-1.5px;color:var(--navy);margin:0 0 14px;font-weight:800}
+h2{font-size:26px;letter-spacing:-.5px;color:var(--navy);margin:28px 0 10px}h3{margin:0 0 4px;font-size:17px}
+p{margin:0 0 10px;max-width:68ch}.mut{color:var(--mut);font-size:14px}a{color:var(--blue)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px}
+.hero{padding:28px 0 12px;display:grid;gap:24px}@media(min-width:800px){.hero{grid-template-columns:1.2fr 1fr;align-items:center}}
+.swap{background:var(--navy);color:var(--bg);border-radius:12px;padding:20px;display:grid;gap:10px}
+.swap div{background:rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;font-size:14px}
+.chip{display:inline-block;border:1px solid var(--ln);border-radius:99px;padding:3px 10px;font-size:13px;margin:2px 4px 2px 0;background:var(--card)}
+.chip.k{border-color:var(--blue);color:var(--blue)}.chip.l{border-color:var(--ok);color:var(--ok)}.chip.ok{border-color:var(--ok);color:var(--ok)}.chip.w{border-color:#c98a00;color:#c98a00}.chip.no{border-color:#b42318}
+.tile{display:flex;justify-content:space-between;gap:8px;text-align:left;width:100%;font-weight:500}
+.tile.k{background:#e6efff;border-color:var(--blue);color:#0b3aa0}.tile.l{background:#e4f6ec;border-color:var(--ok);color:#14663f}
+input,select,textarea{font:inherit;padding:9px 12px;border:1px solid var(--ln);border-radius:8px;background:var(--card);color:var(--tx);width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.row>*{flex:1 1 150px}.row.fit>*{flex:0 0 auto}
+.tabs{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}.tabs button.on{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.timer{font-size:clamp(54px,16vw,96px);font-weight:800;color:var(--navy);letter-spacing:-3px;font-variant-numeric:tabular-nums}
+.bg{position:fixed;inset:0;background:rgba(5,12,30,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}.bg.on{display:flex}
+.modal{background:var(--card);border-radius:12px;padding:20px;width:100%;max-width:400px;max-height:90vh;overflow:auto}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:var(--bg);padding:10px 16px;border-radius:8px;display:none;z-index:30;font-size:14px;max-width:90vw}
+.err{color:#b42318;font-size:13px;min-height:18px}.note{border-left:3px solid var(--blue);padding:6px 12px;background:var(--card);font-size:14px;margin:10px 0}
+pre{white-space:pre-wrap;font:inherit;margin:0}label{font-size:13px;color:var(--mut);display:block}
+@media print{header,.noprint{display:none}}
+</style></head><body>
+<header><div class="bar"><div class="logo" onclick="go('home')">BILIMDOS</div><span class="mut" id="who"></span><button id="lg" class="pri" onclick="auth()">Кіру</button></div><nav id="nav"></nav></header>
+<main id="v"></main>
+<div class="bg" id="bg"><div class="modal" id="md"></div></div><div id="toast"></div>
+<script>
+/* ====== БАПТАУ: Supabase жобаңыздың Settings > API бөлімінен алыңыз ====== */
+const CFG={url:"",key:""};
+/* ======================================================================= */
+const sb=(CFG.url&&window.supabase)?supabase.createClient(CFG.url,CFG.key):null;
+const D=[["Тілдер және әдебиет","Қазақ тілі және әдебиеті","Русский язык и литература","Ағылшын тілі","Неміс тілі","Қытай тілі","Түрік тілі","Сөйлеу және коммуникация"],
+["Тарих және қоғам","Қазақстан тарихы","Дүниежүзі тарихы","Құқық негіздері","Қоғамтану","Саясаттану негіздері","Мәдениеттану"],
+["Математика және жаратылыстану","Алгебра","Геометрия","Физика","Химия","Биология","География","Астрономия","Экология","Статистика және ықтималдық","Қаржылық математика"],
+["IT және жасанды интеллект","Программалау","Веб-әзірлеу","ЖИ-мен жұмыс","Робототехника","Киберқауіпсіздік негіздері","Деректерді талдау","Цифрлық сауаттылық"],
+["Дизайн және шығармашылық","Графикалық дизайн","UI/UX дизайн","Видеомонтаж","Фотография","Музыка және өнер"],
+["Практикалық және кәсіби дағдылар","Презентациямен жұмыс","Excel және Google Sheets","Жобаларды басқару","Кәсіпкерлік негіздері","Көпшілік алдында сөйлеу","Сыни ойлау","Медиасауаттылық","Уақытты басқару","Зерттеу және ғылыми жоба","Көшбасшылық және командалық жұмыс"]];
+const S=[];D.forEach(g=>g.slice(1).forEach(n=>S.push({id:S.length+1,n,c:g[0]})));
+const nm=id=>S[id-1]?S[id-1].n:"—",LV=["Beginner","Intermediate","Advanced","Ready to Teach"];
+const KIND=["Олимпиада","Ғылыми жоба","Конкурс","Басқа"],PL=["1 орын","2 орын","3 орын","Лауреат / диплом","Қатысушы"],LVL=["Мектеп","Аудан/қала","Облыс","Республика","Халықаралық"];
+const DR={it:["IT",["Мектеп оқушыларына арналған үй тапсырмасы трекері (веб-қосымша)","Қазақ тіліндегі қарапайым чат-бот","Мектеп құралдарын есепке алу жүйесі"]],
+ai:["ЖИ",["Қолжазба цифрларын тану моделі (MNIST негізінде)","Оқу мәтіндерін тақырып бойынша жіктейтін модель","ЖИ жауаптарының дұрыстығы: оқушылар сауалнамасы мен талдау"]],
+phy:["Физика",["Ауа қысымы мен ауа райы байланысын бақылау","Күн батареясы қуатының жарық бұрышына тәуелділігі","Материалдардың жылу өткізгіштігін салыстыру"]],
+mat:["Математика",["Жергілікті ауа температурасының статистикалық талдауы","Фибоначчи саны және алтын қима табиғат пен сәулеттен","Ойын теориясы: мектептегі күнделікті шешімдер"]],
+chem:["Химия",["Табиғи индикаторлар (қызыл қырыққабат, қызылша)","Ауыз су сапасын тест жолақтарымен салыстыру","Өсімдік бояуларын алу және тұрақтылығын тексеру"]],
+bio:["Биология",["Мектеп аумағындағы ағаштардың жай-күйін зерттеу","Жарықтың бөлме өсімдіктерінің өсуіне әсері","Оқушылардың ұйқы режимі мен зейіні (сауалнама)"]],
+eco:["Экология",["Мектептегі қоқыс көлемін өлшеу және сұрыптау жоспары","Мектеп аймағындағы шу деңгейін өлшеу","Су мен электр тұтынуды азайту жобасы"]],
+rob:["Робототехника",["Ақылды өсімдік суарғыш (ылғал датчигі, Arduino/ESP32)","Сызықпен жүретін робот","Сынып ішіндегі CO₂ мониторы"]],
+his:["Тарих",["Мектеп тарихы: түлектермен сұхбат","Туған өлке тарихы: мұражай мен архив деректері","Ата-әжелердің естеліктері бойынша ауызша тарих"]],
+geo:["География",["Мектеп маңындағы көше ағынын зерттеу","Жергілікті ауа райы деректерін көп жыл бойы салыстыру","GIS арқылы туған қала картасын жасау"]],
+lng:["Тілдер",["Қазақ тіліндегі кірме сөздерге сауалнама","Мектеп оқушыларының сленгін талдау","Бір мәтіннің аудармалар сапасын салыстыру"]]};
+const OFF=[["IOI — халықаралық информатика олимпиадасы","https://ioinformatics.org"],["IMO — халықаралық математика олимпиадасы","https://www.imo-official.org"],["IPhO — халықаралық физика олимпиадасы","https://www.ipho-new.org"],["ҚР Оқу-ағарту министрлігі","https://edu.gov.kz"]];
+const FIELDS={contests:[["title","Атауы"],["subject_id","Пән","s",S.map(s=>[s.id,s.n])],["grade_min","Сынып (бастап)","n"],["grade_max","Сынып (дейін)","n"],["level","Деңгей","s",LVL.map(x=>[x,x])],["date","Мерзімі","d"],["url","Ресми сілтеме"],["descr","Сипаттама","t"]],
+topics:[["area","Бағыт","s",Object.keys(DR).map(k=>[k,DR[k][0]])],["title","Тақырып"],["idea","Идея / сипаттама","t"],["plan","Зерттеу жоспары","t"]],
+mats:[["area","Бөлім","s",[["olymp","Олимпиада"]].concat(Object.keys(DR).map(k=>[k,DR[k][0]]))],["kind","Түрі","s",[["Материал","Материал"],["Тапсырма","Тапсырма"]]],["title","Атауы"],["body","Мәтін","t"],["url","Сілтеме"]],
+rules:[["section","Бөлім","s",[["project","Ғылыми жоба"],["olymp","Олимпиада"]]],["title","Тақырып"],["body","Мәтін","t"]]};
+let U=null,me=null,mine={sk:[],ach:[],ses:[],rq:[]},C={contests:[],topics:[],mats:[],rules:[]};
+let ui={mode:"k",q:"",cat:"",dr:"it",ps:"",rt:"project",tt:"pend",os:"",og:"",ol:""};
+const $=s=>document.querySelector(s),E=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today=()=>new Date().toISOString().slice(0,10),T=()=>me&&me.role=="teacher";
+function toast(t){const e=$("#toast");e.textContent=t;e.style.display="block";clearTimeout(e.t);e.t=setTimeout(()=>e.style.display="none",2800)}
+const NO='<p class="mut">Әзірге мәлімет жоқ</p>';
+const PG=[["home","Басты бет"],["dirs","Бағыттар"],["find","Оқушыларды табу"],["proj","Ғылыми жоба"],["olymp","Олимпиадалар"],["rules","Ережелер"],["ypt","YPT Study"],["rank","Рейтинг"],["port","Портфолио"]];
+function go(p){location.hash=p}
+function render(){let p=location.hash.slice(1)||"home";const nav=PG.concat(T()?[["teach","Мұғалім кабинеті"]]:[]);if(!nav.find(x=>x[0]==p))p="home";
+$("#nav").innerHTML=nav.map(x=>`<a tabindex=0 class="${x[0]==p?"on":""}" onclick="go('${x[0]}')">${x[1]}</a>`).join("");
+$("#lg").textContent=U?"Шығу":"Кіру";$("#lg").onclick=U?out:()=>auth();$("#who").textContent=me?me.name+(T()?" · мұғалім":""):"";
+$("#v").innerHTML=(sb?"":'<div class="note"><b>База қосылмаған.</b> index.html ішіндегі CFG-ға Supabase URL мен key қойыңыз (schema.sql-ді алдымен іске қосыңыз). Дейін кіру және сақтау жұмыс істемейді.</div>')+V[p]();if(A[p])A[p]();if(!ui.keep)window.scrollTo(0,0);ui.keep=0}
+window.addEventListener("hashchange",render);
+async function load(){if(!sb)return;const s=(await sb.auth.getSession()).data.session;U=s?s.user:null;
+const g=async(t,o,a)=>(await sb.from(t).select("*").order(o,{ascending:!!a})).data||[];
+[C.contests,C.topics,C.mats,C.rules]=await Promise.all([g("contests","date",1),g("topics","id"),g("mats","id"),g("rules","id",1)]);
+me=null;mine={sk:[],ach:[],ses:[],rq:[]};
+if(U){const r=await Promise.all([sb.from("profiles").select("*").eq("id",U.id).single(),sb.from("skills").select("*"),sb.from("achievements").select("*").eq("user_id",U.id).order("created_at",{ascending:false}),sb.from("sessions").select("*").eq("user_id",U.id).order("id",{ascending:false}),sb.from("requests").select("*,f:profiles!requests_from_id_fkey(name,grade),t:profiles!requests_to_id_fkey(name,grade)").order("id",{ascending:false})]);
+me=r[0].data;mine.sk=(r[1].data||[]).filter(x=>x.user_id==U.id);mine.ach=r[2].data||[];mine.ses=r[3].data||[];mine.rq=r[4].data||[]}}
+function needAuth(w){toast((w||"Бұл әрекет")+" үшін кіру керек");auth()}
+/* ---- auth ---- */
+function closeM(){$("#bg").classList.remove("on")}
+$("#bg").onclick=e=>{if(e.target.id=="bg")closeM()};document.addEventListener("keydown",e=>{if(e.key=="Escape")closeM()});
+function auth(reg){$("#md").innerHTML=`<h3>${reg?"Тіркелу":"Кіру"}</h3><div class="tabs"><button class="${reg?"":"on"}" onclick="auth(0)">Кіру</button><button class="${reg?"on":""}" onclick="auth(1)">Тіркелу</button></div>
+<div class="row">${reg?`<input id="nm" placeholder="Аты-жөні" autocomplete="name"><select id="gr"><option value="">Сынып</option>${[7,8,9,10,11].map(g=>`<option>${g}</option>`).join("")}</select>`:""}<input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Құпиясөз (кемінде 8)" autocomplete="${reg?"new-password":"current-password"}"></div><div class="err" id="er"></div>
+<div class="row fit"><button class="pri" onclick="sub(${reg?1:0})">${reg?"Тіркелу":"Кіру"}</button>${reg?"":'<button onclick="rec()">Құпиясөзді қалпына келтіру</button>'}<button onclick="closeM()">Жабу</button></div><p class="mut">Мұғалім рөлін әкімші береді. Тіркелген әркім — оқушы.</p>`;$("#bg").classList.add("on")}
+function chk(pw){const e=$("#em").value.trim(),er=$("#er");er.textContent="";if(!sb){er.textContent="База қосылмаған (CFG)";return 0}if(!/^\S+@\S+\.\S+$/.test(e)){er.textContent="Дұрыс email енгізіңіз";return 0}if(pw&&$("#pw").value.length<8){er.textContent="Құпиясөз кемінде 8 таңба";return 0}return 1}
+async function sub(r){if(!chk(1))return;const e=$("#em").value.trim(),p=$("#pw").value;let x;
+if(r){const n=$("#nm").value.trim(),g=$("#gr").value;if(!n||!g){$("#er").textContent="Аты-жөніңізді және сыныпты көрсетіңіз";return}x=await sb.auth.signUp({email:e,password:p,options:{data:{name:n,grade:g}}})}else x=await sb.auth.signInWithPassword({email:e,password:p});
+if(x.error){$("#er").textContent=x.error.message;return}if(r&&!x.data.session){$("#er").textContent="Email-ға растау хаты жіберілді. Растап, кіріңіз.";return}closeM();await load();render();toast("Сәтті")}
+async function rec(){if(!chk(0))return;const x=await sb.auth.resetPasswordForEmail($("#em").value.trim());$("#er").textContent=x.error?x.error.message:"Қалпына келтіру сілтемесі email-ға жіберілді"}
+async function out(){await sb.auth.signOut();await load();go("home");render()}
+/* ---- беттер ---- */
+const chips=(a,c)=>a.map(i=>`<span class="chip ${c}">${nm(i)}</span>`).join("")||'<span class="mut">—</span>';
+const link=(u,t)=>/^https?:\/\//.test(u||"")?`<a href="${E(u)}" target="_blank" rel="noopener">${E(t||u)}</a>`:"";
+const opt=(a,v)=>a.map(x=>`<option value="${E(x[0])}" ${x[0]==v?"selected":""}>${E(x[1])}</option>`).join("");
+const V={
+home:()=>`<section class="hero"><div><h1>Білімді бөліс. Бірге дамы.</h1><p>BILIMDOS — №4 мамандандырылған мектеп-интернаттың 7–11 сынып оқушыларына арналған платформа: бір-біріне үйрету, ғылыми жоба, олимпиадаға дайындық және жетістіктер портфолиосы.</p><div class="row fit"><button class="pri" onclick="go('proj')">Ғылыми жоба орталығы</button><button onclick="go('olymp')">Олимпиадалар</button><button onclick="go('port')">Портфолио</button></div></div>
+<div class="swap"><div>Мен алгебраны білемін → геометрияны үйренгім келеді</div><div>Басқа оқушы геометрияны біледі → алгебраны үйренгісі келеді</div><div>Платформа екеуін табады, олар бір-бірін үйретеді</div></div></section>
+<h2>Қалай жұмыс істейді</h2><div class="grid"><div class="card"><h3>Бағыттар</h3><p class="mut">Не білетініңді және не үйренгің келетінін белгіле.</p></div><div class="card"><h3>Оқушыларды табу</h3><p class="mut">Сәйкес оқушыға сұраныс жібер.</p></div><div class="card"><h3>Жетістіктер</h3><p class="mut">Жетістік пен дипломды жүкте — мұғалім растайды.</p></div></div>`,
+dirs:()=>`<h2>Бағыттар</h2><p class="mut">Таңдауың базада сақталады.</p>
+<div class="tabs"><button class="${ui.mode=="k"?"on":""}" onclick="ui.mode='k';render()">Мен не білемін?</button><button class="${ui.mode=="l"?"on":""}" onclick="ui.mode='l';render()">Мен не үйренгім келеді?</button></div>
+<div class="row"><input id="q" placeholder="Пәнді іздеу" value="${E(ui.q)}"><select id="cat"><option value="">Барлық санат</option>${D.map(g=>`<option ${ui.cat==g[0]?"selected":""}>${g[0]}</option>`).join("")}</select></div><div id="list"></div>`,
+find:()=>`<h2>Оқушыларды табу</h2><div id="fd">${U?'<p class="mut">Жүктелуде…</p>':'<div class="note">Кіріңіз және «Бағыттар» бетінде таңдау жасаңыз.<br><button class="pri" style="margin-top:8px" onclick="needAuth(\'Оқушыларды табу\')">Кіру</button></div>'}</div>`,
+proj:()=>{const q=ui.ps.toLowerCase(),keys=q?Object.keys(DR):[ui.dr];
+const ideas=keys.flatMap(k=>DR[k][1].map((t,i)=>({k,t,i}))).filter(x=>!q||x.t.toLowerCase().includes(q)),tp=C.topics.filter(x=>q?(x.title+x.idea).toLowerCase().includes(q):x.area==ui.dr),mt=q?[]:C.mats.filter(x=>x.area==ui.dr);
+const first=DR[ui.dr][1][0];
+return `<h2>Ғылыми жоба орталығы · 7–11 сынып</h2><input id="ps" placeholder="Тақырып іздеу (барлық бағыт бойынша)" value="${E(ui.ps)}"><div class="tabs">${Object.keys(DR).map(k=>`<button class="${k==ui.dr&&!q?"on":""}" onclick="ui.dr='${k}';ui.ps='';render()">${DR[k][0]}</button>`).join("")}</div>
+<h3>Жоба идеялары</h3><div class="grid">${ideas.map(x=>`<div class="card"><span class="chip">${DR[x.k][0]}</span><p>${E(x.t)}</p><button onclick="pick('${x.k}',${x.i})">Жоспар құруға алу</button></div>`).join("")||NO}</div>
+${tp.length?`<h3 style="margin-top:16px">Мұғалімдер қосқан тақырыптар</h3><div class="grid">${tp.map(x=>`<div class="card"><span class="chip">${DR[x.area]?DR[x.area][0]:""}</span><h3>${E(x.title)}</h3><p>${E(x.idea)}</p>${x.plan?`<div class="mut">Жоспар:</div><pre>${E(x.plan)}</pre>`:""}</div>`).join("")}</div>`:""}
+${mt.length?`<h3 style="margin-top:16px">Материалдар</h3><div class="grid">${mt.map(x=>`<div class="card"><span class="chip">${E(x.kind)}</span><h3>${E(x.title)}</h3><pre>${E(x.body)}</pre>${link(x.url,"Ашу")}</div>`).join("")}</div>`:""}
+<h2>Мақсат пен міндет құру</h2><div class="card"><input id="gt" placeholder="Жоба тақырыбын жазыңыз"><div class="row fit"><button class="pri" onclick="gen()">Құру</button><button onclick="cp()">Көшіру</button></div><pre id="go" class="mut"></pre></div>
+<h2>Зерттеу жоспары (үлгі)</h2><div class="card"><pre>1. Тақырып пен өзектілікті таңдау — 1 апта
+2. Әдебиет пен дереккөздерді оқу — 1–2 апта
+3. Гипотеза мен зерттеу әдісін анықтау — 1 апта
+4. Эксперимент / бақылау / сауалнама, деректер жинау — 3–5 апта
+5. Деректерді талдау, кесте және график жасау — 1–2 апта
+6. Қорытынды, ұсыныстар, жұмысты рәсімдеу — 1 апта
+7. Презентация мен қорғауға дайындық — 1 апта</pre></div>
+<h2>Жоба құрылымының үлгісі</h2><div class="card"><div class="mut">Мысал тақырып (${DR[ui.dr][0]})</div><pre><b>Тақырып:</b> ${E(first)}
+<b>Өзектілік:</b> бұл мәселе неге маңызды? (2–3 сөйлем)
+<b>Зерттеу сұрағы мен гипотеза:</b> …
+<b>Мақсат:</b> … анықтау / салыстыру / әзірлеу
+<b>Міндеттер:</b> 1) … 2) … 3) …
+<b>Әдістер:</b> бақылау, өлшеу, сауалнама, эксперимент
+<b>Нәтиже:</b> кесте, график, қорытынды
+<b>Дереккөздер:</b> кемінде 5</pre></div>`},
+olymp:()=>{const L=C.contests.filter(c=>(!ui.os||c.subject_id==ui.os)&&(!ui.og||(c.grade_min<=ui.og&&c.grade_max>=ui.og))&&(!ui.ol||c.level==ui.ol)),M=C.mats.filter(m=>m.area=="olymp");
+return `<h2>Олимпиадалар</h2><div class="row"><select id="os" onchange="ui.os=this.value;ui.keep=1;render()"><option value="">Барлық пән</option>${opt(S.map(s=>[s.id,s.n]),ui.os)}</select><select id="og" onchange="ui.og=+this.value;ui.keep=1;render()"><option value="">Барлық сынып</option>${opt([7,8,9,10,11].map(g=>[g,g+"-сынып"]),ui.og)}</select><select id="ol" onchange="ui.ol=this.value;ui.keep=1;render()"><option value="">Барлық деңгей</option>${opt(LVL.map(x=>[x,x]),ui.ol)}</select></div>
+<h3>Мерзімдер</h3><div class="grid">${L.map(c=>`<div class="card"><span class="chip">${E(c.level)}</span><span class="chip k">${nm(c.subject_id)}</span><h3>${E(c.title)}</h3><div class="mut">${c.grade_min}–${c.grade_max} сынып · ${c.date?new Date(c.date).toLocaleDateString("kk-KZ"):"мерзімі белгісіз"}</div><p>${E(c.descr)}</p>${link(c.url,"Ресми сілтеме")}</div>`).join("")||NO}</div>
+<h3 style="margin-top:16px">Дайындық материалдары мен тапсырмалар</h3><div class="grid">${M.map(m=>`<div class="card"><span class="chip">${E(m.kind)}</span><h3>${E(m.title)}</h3><pre>${E(m.body)}</pre>${link(m.url,"Ашу")}</div>`).join("")||NO}</div>
+<h3 style="margin-top:16px">Халықаралық және ресми сайттар</h3><div class="card">${OFF.map(o=>`<div>${link(o[1],o[0])}</div>`).join("")}</div>`},
+rules:()=>{const R=C.rules.filter(r=>r.section==ui.rt);return `<h2>Ережелер</h2><div class="tabs"><button class="${ui.rt=="project"?"on":""}" onclick="ui.rt='project';render()">Ғылыми жоба</button><button class="${ui.rt=="olymp"?"on":""}" onclick="ui.rt='olymp';render()">Олимпиада</button></div>${R.map(r=>`<div class="card" style="margin-bottom:10px"><h3>${E(r.title)}</h3><pre>${E(r.body)}</pre></div>`).join("")||'<p class="mut">Әзірге ереже жоқ. Мұғалім кабинеті арқылы қосылады.</p>'}`},
+ypt:()=>`<h2>YPT Study</h2><div class="card"><div class="row"><select id="ys">${S.map(s=>`<option value="${s.id}">${s.n}</option>`).join("")}</select><select id="yd" onchange="tShow()"><option value="25">25 минут</option><option value="45">45 минут</option><option value="60">60 минут</option></select></div><div class="timer" id="tm">25:00</div><div class="row fit"><button class="pri" id="ys1" onclick="tStart()">Бастау</button><button onclick="tFinish()">Аяқтау</button></div><p class="mut" style="margin-top:10px">Бұл — назар аударуға арналған таймер: веб-сайт басқа қолданбаларды бұғаттай алмайды. Сессия кіргенде ғана сақталады.</p></div><h2>Бүгінгі нәтиже</h2><div class="card" id="yh"></div>`,
+rank:()=>`<h2>Рейтинг</h2><p class="mut">Тек мұғалім растаған жетістіктер саны бойынша.</p><div class="card" id="rk">${U?"Жүктелуде…":"Рейтингті көру үшін кіріңіз."}</div>`,
+port:()=>{if(!U)return `<h2>Портфолио</h2><div class="note">Портфолио үшін кіріңіз.<br><button class="pri" style="margin-top:8px" onclick="auth()">Кіру</button></div>`;
+const st={pending:["w","Тексерілуде"],approved:["ok","Расталды"],rejected:["no","Қабылданбады"]};
+const inc=mine.rq.filter(r=>r.to_id==U.id),sent=mine.rq.filter(r=>r.from_id==U.id);
+return `<h2>${E(me?me.name:"")} · ${me&&me.grade||""}-сынып</h2><div class="mut">Білемін</div>${chips(mine.sk.filter(x=>x.kind=="k").map(x=>x.subject_id),"k")}<div class="mut" style="margin-top:8px">Үйренгім келеді</div>${chips(mine.sk.filter(x=>x.kind=="l").map(x=>x.subject_id),"l")}<div class="mut" style="margin-top:8px">Оқу сессиялары: ${mine.ses.length}, барлығы ${mine.ses.reduce((a,b)=>a+b.minutes,0)} мин</div>
+<h2>Жетістіктер</h2><div class="card noprint"><div class="row"><input id="a_t" placeholder="Атауы (мыс. облыстық олимпиада)"><select id="a_k">${KIND.map(k=>`<option>${k}</option>`).join("")}</select><select id="a_s"><option value="">Пән</option>${opt(S.map(s=>[s.id,s.n]))}</select><select id="a_p">${PL.map(k=>`<option>${k}</option>`).join("")}</select><input id="a_d" type="date" max="${today()}"></div><label>Диплом/сертификат файлы (PDF немесе сурет, 5 МБ дейін)</label><input id="a_f" type="file" accept=".pdf,image/*"><div class="row fit"><button class="pri" onclick="addAch()">Мұғалімге жіберу</button><button onclick="window.print()">Басып шығару</button></div><p class="mut">Мұғалім растағаннан кейін ғана рейтингке түседі.</p></div>
+<div class="grid" style="margin-top:12px">${mine.ach.map(a=>`<div class="card"><span class="chip ${st[a.status][0]}">${st[a.status][1]}</span><span class="chip">${E(a.kind)}</span><h3>${E(a.title)}</h3><div class="mut">${a.place||""} ${a.subject_id?"· "+nm(a.subject_id):""} ${a.date?"· "+a.date:""}</div>${a.note?`<p class="mut">Мұғалім: ${E(a.note)}</p>`:""}<div class="row fit noprint">${a.file_path?`<button onclick="openF('${E(a.file_path)}')">Файлды ашу</button>`:""}<button class="no" onclick="delAch(${a.id},'${E(a.file_path||"")}')">Жою</button></div></div>`).join("")||NO}</div>
+<h2>Сұраныстар</h2><div class="card">${inc.map(r=>`<div><b>${E(r.f&&r.f.name)}</b> (${r.f&&r.f.grade}-сынып) сенен «${nm(r.subject_id)}» үйренгісі келеді</div>`).join("")||'<span class="mut">Кіріс сұраныс жоқ</span>'}<hr style="border:0;border-top:1px solid var(--ln)">${sent.map(r=>`<div class="mut">Жіберілді: ${E(r.t&&r.t.name)} · ${nm(r.subject_id)}</div>`).join("")||'<span class="mut">Жіберілген сұраныс жоқ</span>'}</div>`},
+teach:()=>{if(!T())return"";const tb=[["pend","Тексеру"],["contests","Конкурс"],["topics","Тақырып"],["mats","Материал"],["rules","Ереже"]];
+return `<h2>Мұғалім кабинеті</h2><div class="tabs">${tb.map(t=>`<button class="${ui.tt==t[0]?"on":""}" onclick="ui.tt='${t[0]}';render()">${t[1]}</button>`).join("")}</div>`+(ui.tt=="pend"?'<div id="pd">Жүктелуде…</div>':`<div class="card"><div class="row">${FIELDS[ui.tt].map(f=>`<div><label>${f[1]}</label>${f[2]=="t"?`<textarea id="f_${f[0]}" rows="3"></textarea>`:f[2]=="s"?`<select id="f_${f[0]}">${opt(f[3])}</select>`:`<input id="f_${f[0]}" type="${f[2]=="n"?"number":f[2]=="d"?"date":"text"}">`}</div>`).join("")}</div><button class="pri" onclick="addRow('${ui.tt}')">Қосу</button></div><div class="grid" style="margin-top:12px">${C[ui.tt].map(x=>`<div class="card"><h3>${E(x.title)}</h3><div class="mut">${E(x.area||x.section||x.level||"")}</div><button class="no" onclick="delRow('${ui.tt}',${x.id})">Жою</button></div>`).join("")||NO}</div>`)}};
+/* ---- әрекеттер ---- */
+function drawList(){const q=ui.q.toLowerCase(),el=$("#list");if(!el)return;
+el.innerHTML=D.filter(g=>!ui.cat||g[0]==ui.cat).map(g=>{const it=S.filter(s=>s.c==g[0]&&s.n.toLowerCase().includes(q));return it.length?`<h3 style="margin-top:16px">${g[0]}</h3><div class="grid">${it.map(s=>{const x=mine.sk.find(y=>y.subject_id==s.id&&y.kind==ui.mode),on=!!x;
+return `<div><button class="tile ${on?ui.mode:""}" aria-pressed="${on}" onclick="tog(${s.id})"><span>${s.n}</span><span>${on?"✓":"+"}</span></button>${ui.mode=="k"&&on?`<select onchange="lvl(${s.id},this.value)" aria-label="Деңгей">${LV.map((v,i)=>`<option value="${i}" ${x.level==i?"selected":""}>${v}</option>`).join("")}</select>`:""}</div>`}).join("")}</div>`:""}).join("")||NO}
+async function tog(id){if(!U)return needAuth("Таңдауды сақтау");const i=mine.sk.findIndex(y=>y.subject_id==id&&y.kind==ui.mode);
+if(i>=0){const x=mine.sk[i];mine.sk.splice(i,1);drawList();const r=await sb.from("skills").delete().eq("id",x.id);if(r.error)toast(r.error.message)}
+else{const r=await sb.from("skills").insert({subject_id:id,kind:ui.mode}).select().single();if(r.error)return toast(r.error.message);mine.sk.push(r.data);drawList()}}
+async function lvl(id,v){const x=mine.sk.find(y=>y.subject_id==id&&y.kind=="k");x.level=+v;const r=await sb.from("skills").update({level:+v}).eq("id",x.id);if(r.error)toast(r.error.message)}
+function pick(k,i){$("#gt").value=DR[k][1][i];$("#gt").scrollIntoView({behavior:"smooth",block:"center"});gen()}
+function gen(){const t=$("#gt").value.trim();if(!t)return toast("Алдымен тақырыпты жазыңыз");
+$("#go").textContent=`Тақырып: ${t}\n\nМақсаты: «${t}» тақырыбы бойынша зерттеу жүргізіп, нәтижесін дәлелді қорытындымен көрсету.\n\nМіндеттері:\n1. Тақырып бойынша әдебиет пен дереккөздерді талдау.\n2. Зерттеу әдісі мен өлшемдерін таңдау.\n3. Бақылау / эксперимент / сауалнама арқылы деректер жинау.\n4. Деректерді өңдеп, кесте мен график жасау.\n5. Нәтижені гипотезамен салыстырып, қорытынды жасау.\n6. Практикалық ұсыныс беру.`}
+function cp(){const t=$("#go").textContent;if(!t)return toast("Алдымен «Құру» батырмасын басыңыз");navigator.clipboard.writeText(t).then(()=>toast("Көшірілді"),()=>toast("Көшіру мүмкін болмады"))}
+async function addAch(){if(!U)return needAuth();const v=i=>$("#"+i).value,t=v("a_t").trim();if(!t)return toast("Атауын жазыңыз");let path=null;const f=$("#a_f").files[0];
+if(f){if(f.size>5e6)return toast("Файл 5 МБ-тан аспауы керек");path=U.id+"/"+Date.now()+"_"+f.name.replace(/[^\w.-]/g,"_");const u=await sb.storage.from("files").upload(path,f);if(u.error)return toast(u.error.message)}
+const r=await sb.from("achievements").insert({title:t,kind:v("a_k"),subject_id:v("a_s")||null,place:v("a_p"),date:v("a_d")||null,file_path:path});if(r.error)return toast(r.error.message);await load();render();toast("Мұғалімге жіберілді")}
+async function delAch(id,p){if(!confirm("Жетістікті жою?"))return;if(p)await sb.storage.from("files").remove([p]);const r=await sb.from("achievements").delete().eq("id",id);if(r.error)return toast(r.error.message);await load();render()}
+async function openF(p){const r=await sb.storage.from("files").createSignedUrl(p,300);if(r.error)return toast(r.error.message);window.open(r.data.signedUrl,"_blank","noopener")}
+async function sendRq(to,s){const r=await sb.from("requests").insert({to_id:to,subject_id:s});if(r.error)return toast(r.error.message);await load();toast("Сұраныс жіберілді");A.find()}
+async function addRow(t){const o={};for(const f of FIELDS[t]){let x=$("#f_"+f[0]).value.trim();if(f[2]=="n"||f[0]=="subject_id")x=x?+x:null;if(f[2]=="d"&&!x)x=null;o[f[0]]=x}
+if(!o.title)return toast("Атауын жазыңыз");if(o.url&&!/^https?:\/\//.test(o.url))return toast("Сілтеме http:// немесе https:// деп басталуы керек");
+const r=await sb.from(t).insert(o);if(r.error)return toast(r.error.message);await load();render();toast("Қосылды")}
+async function delRow(t,id){if(!confirm("Жою?"))return;const r=await sb.from(t).delete().eq("id",id);if(r.error)return toast(r.error.message);await load();render()}
+async function review(id,s){const n=($("#n"+id)||{}).value||null;const r=await sb.from("achievements").update({status:s,note:n}).eq("id",id);if(r.error)return toast(r.error.message);toast(s=="approved"?"Расталды":"Қабылданбады");A.teach()}
+const A={dirs(){drawList();$("#q").oninput=e=>{ui.q=e.target.value;drawList()};$("#cat").onchange=e=>{ui.cat=e.target.value;drawList()}},
+proj(){$("#ps").oninput=e=>{ui.ps=e.target.value;ui.keep=1;const p=e.target.selectionStart;render();const i=$("#ps");i.focus();i.setSelectionRange(p,p)}},
+ypt(){drawYH();tShow()},
+async find(){if(!U||!sb)return;const r=await sb.from("skills").select("user_id,subject_id,kind,profiles(name,grade)").neq("user_id",U.id),el=$("#fd");if(!el)return;
+const my=k=>mine.sk.filter(x=>x.kind==k).map(x=>x.subject_id);if(!my("k").length&&!my("l").length){el.innerHTML='<div class="note">Алдымен «Бағыттар» бетінде таңдау жасаңыз.<br><button class="pri" style="margin-top:8px" onclick="go(\'dirs\')">Бағыттарға өту</button></div>';return}
+const u={};(r.data||[]).forEach(x=>{const o=u[x.user_id]=u[x.user_id]||{id:x.user_id,p:x.profiles,k:[],l:[]};o[x.kind].push(x.subject_id)});
+const L=Object.values(u).map(o=>({o,a:o.k.filter(s=>my("l").includes(s)),b:o.l.filter(s=>my("k").includes(s))})).filter(x=>x.a.length||x.b.length).sort((x,y)=>(y.a.length+y.b.length)-(x.a.length+x.b.length));
+el.innerHTML=`<div class="grid">${L.map(({o,a,b})=>`<div class="card"><h3>${E(o.p&&o.p.name)}</h3><div class="mut">${o.p&&o.p.grade}-сынып</div><div class="mut">Үйрете алады</div>${chips(o.k,"k")}<div class="mut">Үйренгісі келеді</div>${chips(o.l,"l")}<div class="note"><b>${a.length&&b.length?"Өзара сәйкестік":"Ішінара сәйкестік"}</b><br>${a.length?"Ол сені үйретеді: "+a.map(nm).join(", ")+"<br>":""}${b.length?"Сен оны үйретесің: "+b.map(nm).join(", "):""}</div>${a.map(s=>`<button class="pri" ${mine.rq.some(q=>q.to_id==o.id&&q.subject_id==s&&q.from_id==U.id)?"disabled":""} onclick="sendRq('${o.id}',${s})">Сұрау: ${nm(s)}</button>`).join(" ")}</div>`).join("")||'<p class="mut">Әзірге сәйкестік жоқ. Басқа оқушылар тіркелген сайын көрінеді.</p>'}</div>`},
+async rank(){if(!U)return;const r=await sb.from("leaderboard").select("*").order("total",{ascending:false}).limit(20);$("#rk").innerHTML=(r.data||[]).map((x,i)=>`<div class="row" style="margin:4px 0"><span>${i+1}. ${E(x.name)} · ${x.grade}-сынып</span><span class="mut">${x.total} жетістік</span></div>`).join("")||'<span class="mut">Әзірге мәлімет жоқ</span>'},
+async teach(){if(ui.tt!="pend")return;const r=await sb.from("achievements").select("*,profiles(name,grade)").eq("status","pending").order("created_at"),el=$("#pd");if(!el)return;
+el.innerHTML=`<div class="grid">${(r.data||[]).map(a=>`<div class="card"><h3>${E(a.title)}</h3><div class="mut">${E(a.profiles&&a.profiles.name)} · ${a.profiles&&a.profiles.grade}-сынып</div><div class="mut">${E(a.kind)} · ${E(a.place)} ${a.subject_id?"· "+nm(a.subject_id):""} ${a.date||""}</div>${a.file_path?`<button onclick="openF('${E(a.file_path)}')">Файлды ашу</button>`:'<span class="mut">Файл жоқ</span>'}<input id="n${a.id}" placeholder="Пікір (міндетті емес)" style="margin:8px 0"><div class="row fit"><button class="pri" onclick="review(${a.id},'approved')">Растау</button><button class="no" onclick="review(${a.id},'rejected')">Қабылдамау</button></div></div>`).join("")||'<p class="mut">Тексеруді күткен жетістік жоқ</p>'}</div>`}};
+/* ---- таймер ---- */
+let tm=null,left=0,total=0;
+const fmt=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function tShow(){const e=$("#tm");if(!e)return;e.textContent=tm||left?fmt(left):fmt(+$("#yd").value*60);$("#ys1").textContent=tm?"Тоқтату":"Бастау"}
+function tStart(){if(tm){clearInterval(tm);tm=null;tShow();return}if(!left)total=left=+$("#yd").value*60;
+tm=setInterval(()=>{left--;const e=$("#tm");if(e)e.textContent=fmt(left);if(left<=0)tFinish(1)},1000);tShow()}
+async function tFinish(done){if(!total)return toast("Алдымен таймерді бастаңыз");clearInterval(tm);tm=null;const m=Math.round((total-left)/60),sid=+($("#ys")||{value:1}).value;left=0;total=0;tShow();
+if(m<1)return toast("1 минуттан аз — сақталмады");if(!U)return toast(m+" мин. Сақтау үшін кіріңіз");
+const r=await sb.from("sessions").insert({subject_id:sid,minutes:m});if(r.error)return toast(r.error.message);await load();toast("Сессия сақталды: "+m+" мин");drawYH()}
+function drawYH(){const e=$("#yh");if(!e)return;const t=mine.ses.filter(h=>h.day==today());e.innerHTML=t.length?`<b>${t.reduce((a,b)=>a+b.minutes,0)} мин</b> бүгін`+t.map(h=>`<div class="mut">${nm(h.subject_id)} — ${h.minutes} мин</div>`).join(""):'<span class="mut">Бүгін сессия жоқ</span>'}
+load().then(render).catch(e=>{render();toast("Базаға қосылу қатесі")});render();
+if(sb)sb.auth.onAuthStateChange(ev=>{if(ev=="SIGNED_OUT"||ev=="PASSWORD_RECOVERY")load().then(render)});
+</script></body></html>
